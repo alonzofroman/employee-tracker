@@ -18,6 +18,7 @@ const db = mysql.createConnection(
     console.log('Connected to employees_db.')
 );
 
+// Function to start the program
 function init() {
     inquirer.prompt({
         type: 'list',
@@ -32,6 +33,7 @@ function init() {
             'Update an employee role'
         ]
     }).then((answers) => {
+        // View all departments
         if (answers.initStart == 'View all departments') {
             db.query(`Select * FROM department`, (err, data) => {
                 if (err) {
@@ -41,6 +43,7 @@ function init() {
                 restart();
             })
         }
+        // View all roles
         if (answers.initStart == 'View all roles') {
             db.query('Select * FROM roles', (err, data) => {
                 if (err) {
@@ -50,6 +53,7 @@ function init() {
                 restart();
             })
         }
+        // View all employees
         if (answers.initStart == 'View all employees') {
             db.query('Select * from employee', (err, data) => {
                 if (err) {
@@ -59,7 +63,59 @@ function init() {
                 restart();
             })
         }
-        
+        // ADD a department
+        if (answers.initStart == 'Add a department') {
+            inquirer.prompt([{
+                type: 'input',
+                name: 'departmentName',
+                message: 'What is the department name?'
+            },
+            {
+                type: 'input',
+                name: 'departmentId',
+                message: 'What is the department ID?'
+            }
+        ]).then((depAnswers) => {
+            let sql = `INSERT INTO department (id, name) VALUES (${depAnswers.departmentId}, ${depAnswers.departmentName})`;
+            db.query(sql, (err, data) => {
+                if (err) {
+                    throw err
+                }
+                console.log(data)
+                restart();
+            })
+        })
+        }
+        // ADD an Employee
+        if (answers.initStart == 'Add an employee') {
+            inquirer.prompt([{
+                type: 'input',
+                name: 'firstName',
+                message: 'What is the first name of the employee?'
+            },
+            {
+                type: 'input',
+                name: 'lastName',
+                message: 'What is the last name of the employee?'
+            },
+            {
+                type: 'input',
+                name: 'employeeId',
+                message: 'What is the employee ID?'
+            }
+        ]).then((empAnswers) => {
+            let sql = `INSERT INTO employee (id, first_name, last_name) VALUES (${empAnswers.employeeId}, ${empAnswers.firstName}, ${empAnswers.lastName})`;
+            db.query(sql, (err, data) => {
+                if (err) {
+                    throw err
+                }
+                console.log(data);
+                restart();
+            })
+        })
+        }
+        // Update employee role
+
     })
 }
 
