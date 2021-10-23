@@ -38,12 +38,28 @@ function init() {
                     throw err
                 }
                 console.log(data);
-
+                restart();
             })
         }
     })
 }
 
+function restart() {
+    inquirer.prompt({
+        type: 'confirm',
+        name: 'repeat',
+        message: 'Would you like to continue?'
+    }).then((answer) => {
+        if (answer.repeat === true) {
+            init();
+        }
+        else if (answer.repeat === false) {
+            process.exit(1);
+        }
+    })
+};
+
+init();
 
 
 
