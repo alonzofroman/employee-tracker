@@ -41,6 +41,25 @@ function init() {
                 restart();
             })
         }
+        if (answers.initStart == 'View all roles') {
+            db.query('Select * FROM roles', (err, data) => {
+                if (err) {
+                    throw err
+                }
+                console.log(data);
+                restart();
+            })
+        }
+        if (answers.initStart == 'View all employees') {
+            db.query('Select * from employee', (err, data) => {
+                if (err) {
+                    throw err
+                }
+                console.log(data);
+                restart();
+            })
+        }
+        
     })
 }
 
