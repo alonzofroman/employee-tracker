@@ -63,12 +63,7 @@ function init() {
             updateEmployee();
         }
     })
-}
-
-
-
-
-
+};
 
 
 
@@ -78,7 +73,7 @@ function viewDepartment() {
         if (err) {
             throw err
         }
-        console.log(data);
+        console.table(data);
         restart();
     })
 };
@@ -89,7 +84,7 @@ function viewRoles() {
         if (err) {
             throw err
         }
-        console.log(data);
+        console.table(data);
         restart();
     })
 };
@@ -100,7 +95,7 @@ function viewEmployees() {
         if (err) {
             throw err
         }
-        console.log(data);
+        console.table(data);
         restart();
     })
 };
@@ -118,7 +113,7 @@ function addDepartment() {
         if (err) {
             throw err
         }
-        console.log(data)
+        console.table(data)
         restart();
     })
 })
@@ -135,7 +130,7 @@ function addRole() {
                 departmentChoices.push(data[i].dep_name);
             }
             // departmentChoices.push(data);
-            console.log(departmentChoices);
+            // console.log(departmentChoices);
             // console.log(JSON.stringify(data));
         })
 
@@ -167,7 +162,7 @@ function addRole() {
                     if (err) {
                         throw err
                     }
-                    console.log(data);
+                    console.table(data);
                     restart();
                 })
             })
@@ -209,19 +204,13 @@ function addEmployee() {
             if (err) {
                 throw err
             }
-            // for (i=0; i<data.length; i++) {
-            //     roleId.push(data[i].id);
-            // }
-            let roleId = data[0].id;
-            console.log(roleId);
-            // console.log(roleId);
-            // console.log(roleId);
+        let roleId = data[0].id;
         let sql = `INSERT INTO employee (first_name, last_name, role_id) VALUES ('${empAnswers.firstName}', '${empAnswers.lastName}', ${roleId})`;
         db.query(sql, (err, data) => {
             if (err) {
                 throw err
             }
-            console.log(data);
+            console.table(data);
             restart();
         })
         }); 
@@ -235,9 +224,6 @@ function updateEmployee() {
             if (err) {
                 throw err
             }
-            // console.log(data);
-            // roleChoices.push(data.title);
-
             for (i=0; i<data.length; i++) {
                 roleChoices.push(data[i].title);
             }
@@ -260,7 +246,7 @@ function updateEmployee() {
                 if (err) {
                     throw err
                 }
-                console.log(data);
+                // console.table(data);
                 newRoleId.push(data[0].id);
 
                 let sql = `UPDATE employee SET role_id = ${newRoleId} WHERE id = ${updateAnswer.empId}`;
@@ -268,7 +254,7 @@ function updateEmployee() {
                 if (err) {
                     throw err
                 }
-                console.log(data);
+                console.table(data);
                 restart();
             })
             })
