@@ -6,7 +6,7 @@ USE employees_db;
 
 CREATE TABLE department (
     id INT NOT NULL,
-    name VARCHAR(30) NOT NULL,
+    dep_name VARCHAR(30) NOT NULL,
     PRIMARY KEY (id)
 );
 

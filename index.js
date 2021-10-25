@@ -77,7 +77,7 @@ function init() {
                 message: 'What is the department ID?'
             }
         ]).then((depAnswers) => {
-            let sql = `INSERT INTO department (id, name) VALUES (${depAnswers.departmentId}, ${depAnswers.departmentName})`;
+            let sql = `INSERT INTO department (id, dep_name) VALUES (${depAnswers.departmentId}, ${depAnswers.departmentName})`;
             db.query(sql, (err, data) => {
                 if (err) {
                     throw err
