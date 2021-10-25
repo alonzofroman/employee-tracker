@@ -66,7 +66,6 @@ function init() {
 };
 
 
-
 // View Department Function
 function viewDepartment() {
     db.query(`Select * FROM department`, (err, data) => {
@@ -129,11 +128,7 @@ function addRole() {
             for (i=0; i<data.length; i++) {
                 departmentChoices.push(data[i].dep_name);
             }
-            // departmentChoices.push(data);
-            // console.log(departmentChoices);
-            // console.log(JSON.stringify(data));
         })
-
         inquirer.prompt([
             {
                 type: 'input',
@@ -179,9 +174,6 @@ function addEmployee() {
             for (i=0; i<data.length; i++) {
                 roleChoices.push(data[i].title);
             }
-            // console.log(data);
-            // roleChoices.push(data);
-            
         })
         inquirer.prompt([{
             type: 'input',
@@ -277,7 +269,6 @@ function restart() {
 };
 
 init();
-
 
 
 app.listen(PORT, () => {
