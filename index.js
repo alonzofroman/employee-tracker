@@ -29,6 +29,7 @@ function init() {
             'View all roles',
             'View all employees',
             'Add a department',
+            'Add a role',
             'Add an employee',
             'Update an employee role'
         ]
@@ -85,6 +86,49 @@ function init() {
                 restart();
             })
         })
+        }
+        // Add a role
+        if (answers.initStart == 'Add a role') {
+            let departmentChoices = [];
+            db.query('SELECT id FROM department', (err, data) => {
+                if (err) {
+                    throw err
+                }
+                departmentChoices.push(data);
+            })
+
+            inquirer.prompt([
+                {
+                    type: 'input',
+                    name: 'roleTitle',
+                    message: 'What is the title of the role?'
+                },
+                {
+                    type: 'input',
+                    name: 'roleId',
+                    message: 'What is the ID of the role?'
+                },
+                {
+                    type: 'input',
+                    name: 'roleSalary',
+                    message: 'What is the salary of the role?'
+                },
+                {
+                    type: 'list',
+                    name: 'roleDep',
+                    message: 'What is the department ID for the role?',
+                    choices: departmentChoices
+                }
+            ]).then((roleAnswers) => {
+                let sql = `INSERT INTO roles (id, title, salary, department_id) VALUES (${roleAnswers.roleID}, ${roleAnswers.roleTitle}, ${roleAnswers.roleSalary}, ${roleAnswers.roleDep})`;
+                db.query(sql, (err, data) => {
+                    if (err) {
+                        throw err
+                    }
+                    console.log(data);
+                    restart();
+                })
+            })
         }
         // ADD an Employee
         if (answers.initStart == 'Add an employee') {
@@ -172,6 +216,21 @@ function init() {
 
     })
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function restart() {
     inquirer.prompt({
