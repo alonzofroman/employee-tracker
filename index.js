@@ -70,14 +70,9 @@ function init() {
                 type: 'input',
                 name: 'departmentName',
                 message: 'What is the department name?'
-            },
-            {
-                type: 'input',
-                name: 'departmentId',
-                message: 'What is the department ID?'
             }
         ]).then((depAnswers) => {
-            let sql = `INSERT INTO department (id, dep_name) VALUES (${depAnswers.departmentId}, ${depAnswers.departmentName})`;
+            let sql = `INSERT INTO department (dep_name) VALUES ('${depAnswers.departmentName}')`;
             db.query(sql, (err, data) => {
                 if (err) {
                     throw err
@@ -94,7 +89,12 @@ function init() {
                 if (err) {
                     throw err
                 }
-                departmentChoices.push(data);
+                for (i=0; i<data.length; i++) {
+                    departmentChoices.push(data[i].id);
+                }
+                // departmentChoices.push(data);
+                console.log(departmentChoices);
+                // console.log(JSON.stringify(data));
             })
 
             inquirer.prompt([
@@ -102,11 +102,6 @@ function init() {
                     type: 'input',
                     name: 'roleTitle',
                     message: 'What is the title of the role?'
-                },
-                {
-                    type: 'input',
-                    name: 'roleId',
-                    message: 'What is the ID of the role?'
                 },
                 {
                     type: 'input',
@@ -120,7 +115,7 @@ function init() {
                     choices: departmentChoices
                 }
             ]).then((roleAnswers) => {
-                let sql = `INSERT INTO roles (id, title, salary, department_id) VALUES (${roleAnswers.roleID}, ${roleAnswers.roleTitle}, ${roleAnswers.roleSalary}, ${roleAnswers.roleDep})`;
+                let sql = `INSERT INTO roles (title, salary, department_id) VALUES ('${roleAnswers.roleTitle}', ${roleAnswers.roleSalary}, ${roleAnswers.roleDep})`;
                 db.query(sql, (err, data) => {
                     if (err) {
                         throw err
@@ -151,18 +146,13 @@ function init() {
                 message: 'What is the last name of the employee?'
             },
             {
-                type: 'input',
-                name: 'employeeId',
-                message: 'What is the employee ID?'
-            },
-            {
                 type: 'list',
                 name: 'role',
                 message: 'What is the role of the employee?',
                 choices: roleChoices
             }
         ]).then((empAnswers) => {
-            let sql = `INSERT INTO employee (id, first_name, last_name) VALUES (${empAnswers.employeeId}, ${empAnswers.firstName}, ${empAnswers.lastName})`;
+            let sql = `INSERT INTO employee (first_name, last_name) VALUES ('${empAnswers.firstName}', '${empAnswers.lastName}')`;
             db.query(sql, (err, data) => {
                 if (err) {
                     throw err
@@ -196,7 +186,7 @@ function init() {
                 }
             ]).then((updateAnswer) => {
                 let newRoleId = [];
-                db.query(`SELECT id FROM WHERE roles.title = ${updateAnswer.empRole}`, (err, data) => {
+                db.query(`SELECT id FROM WHERE roles.title = '${updateAnswer.empRole}'`, (err, data) => {
                     if (err) {
                         throw err
                     }
