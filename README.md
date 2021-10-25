@@ -6,6 +6,8 @@ Alonzo Roman
 ## Summary
 The purpose of this project is to create a program that allows the user to manage a company's employees and departments. This is achieved through the use of MySQL databases and Javascript. Users should be able to view departments, roles, and employees, as well as add new departments, roles and employees. Users are also able to update employee roles"
 
+## Instructional Video
+- [Video] (https://watch.screencastify.com/v/iiS8xXfRkuUEcCPHqDXm)
 
 ## Code Snippet
 The use of inquirer and mysql were used for the various functions required to process changes to the database. For updating an employee role, once the option has been selected, queries are made to retrieve information from the roles table in the database, which is used as choices in the inquirer prompt that gets the required information from the user. After the prompt, two more queries are made in order to retrieve and update information from the database. 
@@ -55,7 +57,7 @@ if (answers.initStart == 'Update an employee role') {
 ```
 
 
-## Steps
+## Steps to Create
 - Created the repository and cloned it to my local machine
 - Initialized the repository and added required sql and js files
 - Created database and tables for sql
