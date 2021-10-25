@@ -132,8 +132,12 @@ function init() {
                 if (err) {
                     throw err
                 }
-                console.log(data);
-                roleChoices.push(data);
+                for (i=0; i<data.length; i++) {
+                    roleChoices.push(data[i].title);
+                }
+                // console.log(data);
+                // roleChoices.push(data);
+                
             })
             inquirer.prompt([{
                 type: 'input',
@@ -152,7 +156,18 @@ function init() {
                 choices: roleChoices
             }
         ]).then((empAnswers) => {
-            let sql = `INSERT INTO employee (first_name, last_name) VALUES ('${empAnswers.firstName}', '${empAnswers.lastName}')`;
+            db.query(`SELECT id FROM roles WHERE title = '${empAnswers.role}'`, (err, data) => {
+                if (err) {
+                    throw err
+                }
+                // for (i=0; i<data.length; i++) {
+                //     roleId.push(data[i].id);
+                // }
+                let roleId = data[0].id;
+                console.log(roleId);
+                // console.log(roleId);
+                // console.log(roleId);
+            let sql = `INSERT INTO employee (first_name, last_name, role_id) VALUES ('${empAnswers.firstName}', '${empAnswers.lastName}', ${roleId})`;
             db.query(sql, (err, data) => {
                 if (err) {
                     throw err
@@ -160,6 +175,9 @@ function init() {
                 console.log(data);
                 restart();
             })
+            });
+
+            
         })
         }
         // Update employee role
@@ -169,8 +187,12 @@ function init() {
                 if (err) {
                     throw err
                 }
-                console.log(data);
-                roleChoices.push(data);
+                // console.log(data);
+                // roleChoices.push(data.title);
+
+                for (i=0; i<data.length; i++) {
+                    roleChoices.push(data[i].title);
+                }
             })
             inquirer.prompt([
                 {
@@ -186,14 +208,14 @@ function init() {
                 }
             ]).then((updateAnswer) => {
                 let newRoleId = [];
-                db.query(`SELECT id FROM WHERE roles.title = '${updateAnswer.empRole}'`, (err, data) => {
+                db.query(`SELECT id FROM roles WHERE title = '${updateAnswer.empRole}'`, (err, data) => {
                     if (err) {
                         throw err
                     }
                     console.log(data);
-                    newRoleId.push(data);
-                })
-                let sql = `UPDATE employee SET role_id = ${newRoleId} WHERE id = ${updateAnswer.empId}`;
+                    newRoleId.push(data[0].id);
+
+                    let sql = `UPDATE employee SET role_id = ${newRoleId} WHERE id = ${updateAnswer.empId}`;
                 db.query(sql, (err, data) => {
                     if (err) {
                         throw err
@@ -201,6 +223,8 @@ function init() {
                     console.log(data);
                     restart();
                 })
+                })
+                
             })
         }
 
