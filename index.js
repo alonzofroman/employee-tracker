@@ -85,12 +85,12 @@ function init() {
         // Add a role
         if (answers.initStart == 'Add a role') {
             let departmentChoices = [];
-            db.query('SELECT id FROM department', (err, data) => {
+            db.query('SELECT dep_name FROM department', (err, data) => {
                 if (err) {
                     throw err
                 }
                 for (i=0; i<data.length; i++) {
-                    departmentChoices.push(data[i].id);
+                    departmentChoices.push(data[i].dep_name);
                 }
                 // departmentChoices.push(data);
                 console.log(departmentChoices);
@@ -111,18 +111,27 @@ function init() {
                 {
                     type: 'list',
                     name: 'roleDep',
-                    message: 'What is the department ID for the role?',
+                    message: 'What is the department for the role?',
                     choices: departmentChoices
                 }
             ]).then((roleAnswers) => {
-                let sql = `INSERT INTO roles (title, salary, department_id) VALUES ('${roleAnswers.roleTitle}', ${roleAnswers.roleSalary}, ${roleAnswers.roleDep})`;
-                db.query(sql, (err, data) => {
+                db.query(`SELECT id FROM department WHERE dep_name = '${roleAnswers.roleDep}'`, (err, data) => {
                     if (err) {
                         throw err
                     }
-                    console.log(data);
-                    restart();
+                    let depId = data[0].id;
+                    let sql = `INSERT INTO roles (title, salary, department_id) VALUES ('${roleAnswers.roleTitle}', ${roleAnswers.roleSalary}, ${depId})`;
+                    db.query(sql, (err, data) => {
+                        if (err) {
+                            throw err
+                        }
+                        console.log(data);
+                        restart();
+                    })
+
                 })
+
+                
             })
         }
         // ADD an Employee
