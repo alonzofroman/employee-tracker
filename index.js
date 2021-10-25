@@ -88,6 +88,14 @@ function init() {
         }
         // ADD an Employee
         if (answers.initStart == 'Add an employee') {
+            let roleChoices = [];
+            db.query(`SELECT title FROM roles`, (err, data) => {
+                if (err) {
+                    throw err
+                }
+                console.log(data);
+                roleChoices.push(data);
+            })
             inquirer.prompt([{
                 type: 'input',
                 name: 'firstName',
@@ -102,6 +110,12 @@ function init() {
                 type: 'input',
                 name: 'employeeId',
                 message: 'What is the employee ID?'
+            },
+            {
+                type: 'list',
+                name: 'role',
+                message: 'What is the role of the employee?',
+                choices: roleChoices
             }
         ]).then((empAnswers) => {
             let sql = `INSERT INTO employee (id, first_name, last_name) VALUES (${empAnswers.employeeId}, ${empAnswers.firstName}, ${empAnswers.lastName})`;
@@ -115,6 +129,46 @@ function init() {
         })
         }
         // Update employee role
+        if (answers.initStart == 'Update an employee role') {
+            let roleChoices = [];
+            db.query(`SELECT title FROM roles`, (err, data) => {
+                if (err) {
+                    throw err
+                }
+                console.log(data);
+                roleChoices.push(data);
+            })
+            inquirer.prompt([
+                {
+                    type: 'input',
+                    name: 'empId',
+                    message: 'What is the employee ID?'
+                },
+                {
+                    type: 'list',
+                    name: 'empRole',
+                    message: 'What is their new role?',
+                    choices: roleChoices
+                }
+            ]).then((updateAnswer) => {
+                let newRoleId = [];
+                db.query(`SELECT id FROM WHERE roles.title = ${updateAnswer.empRole}`, (err, data) => {
+                    if (err) {
+                        throw err
+                    }
+                    console.log(data);
+                    newRoleId.push(data);
+                })
+                let sql = `UPDATE employee SET role_id = ${newRoleId} WHERE id = ${updateAnswer.empId}`;
+                db.query(sql, (err, data) => {
+                    if (err) {
+                        throw err
+                    }
+                    console.log(data);
+                    restart();
+                })
+            })
+        }
 
     })
 }
